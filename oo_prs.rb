@@ -11,9 +11,9 @@ class Player_hand
   end
 
   def  <=>(another_hand)
-    if @c == another_hand.c
+    if c == another_hand.c
       0
-    elsif (@c == 'p' && another_hand.c == 'r') || (@c == 'r' && another_hand.c == 's') || (@c == 's' && another_hand.c == 'p')
+    elsif (c == 'p' && another_hand.c == 'r') || (c == 'r' && another_hand.c == 's') || (c == 's' && another_hand.c == 'p')
       1
     else
      -1
