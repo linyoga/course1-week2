@@ -3,23 +3,7 @@ class Board
   
   def initialize
     @data = {}
-    (1..9).each{|position| @data[position] = Square.new(' ')}
-  end
-
-  def draw
-     system 'clear'
-  puts "     |     |"
-  puts "  #{@data[1]}  |  #{@data[2]}  |  #{@data[3]}"
-  puts "     |     |"
-  puts "-----+-----+------"
-  puts "     |     |"
-  puts "  #{@data[4]}  |  #{@data[5]}  |  #{@data[6]}"
-  puts "     |     |"
-  puts "-----+-----+------"
-  puts "     |     |"
-  puts "  #{@data[7]}  |  #{@data[8]}  |  #{@data[9]}"
-  puts "     |     |"
-  puts
+    (1..9).each { |position| @data[position] = Square.new(' ') }
   end
 
   def all_square_marked?
@@ -27,12 +11,11 @@ class Board
   end
 
   def empty_squares
-    #add attr_accessor to access square.value,but we need array, so we need to add .values to change hash to array
-    @data.select{|_, square| square.value == ' '}.values
+    @data.select { |_, square| square.value == ' ' }.values
   end
 
   def empty_positions
-    @data.select{|_, square| square.empty?}.keys
+    @data.select { |_, square| square.empty? }.keys
   end
 
   def mark_square(position, marker)
@@ -46,10 +29,25 @@ class Board
     false
   end
 
+  def draw
+    system 'clear'
+    puts "     |     |"
+    puts "  #{@data[1]}  |  #{@data[2]}  |  #{@data[3]}"
+    puts "     |     |"
+    puts "-----+-----+------"
+    puts "     |     |"
+    puts "  #{@data[4]}  |  #{@data[5]}  |  #{@data[6]}"
+    puts "     |     |"
+    puts "-----+-----+------"
+    puts "     |     |"
+    puts "  #{@data[7]}  |  #{@data[8]}  |  #{@data[9]}"
+    puts "     |     |"
+    puts
+  end
 end
 
 class Square
-    attr_reader :value
+  attr_reader :value
 
   def initialize(value)
     @value = value
@@ -64,13 +62,12 @@ class Square
   end
 
   def empty?
-    @value = ' '
+    @value == ' '
   end
 
   def to_s
     @value
   end
-
 end
 
 class Player
@@ -87,15 +84,15 @@ class Game
   attr_reader :board
   def initialize
     @board = Board.new
-    @human = Player.new("yoga", "X")
-    @computer = Player.new("Sheldon", "O")
+    @human = Player.new('yoga', 'X')
+    @computer = Player.new('Sheldon', 'O')
     @current_player = @human
   end
 
   def current_player_marks_square
     if @current_player == @human
       begin
-        puts "Choose a position (1-9) :"
+        puts 'Choose a position (1-9) :'
         position = gets.chomp.to_i
       end until @board.empty_positions.include?(position)
     else
@@ -104,33 +101,32 @@ class Game
     @board.mark_square(position, @current_player.marker)
   end
 
-
   def current_player_win?
     @board.winning_condition?(@current_player.marker)
   end
 
   def alternate_player
     if @current_player == @human
-      @current_player = @computer
+       @current_player = @computer
     else
       @current_player = @human
     end
   end
 
   def play
-     @board.draw
-      loop do
+    @board.draw
+    loop do
       current_player_marks_square
       @board.draw
     if current_player_win?
-       puts "the winner is #{@current_player.name}!"
+      puts "the winner is #{@current_player.name}!"
        break
-     elsif @board.all_square_marked?
-        puts "It's a Tie"
+    elsif @board.all_square_marked?
+      puts "It's a Tie"
         break
-      else
-        alternate_player
-      end
+    else
+      alternate_player
+    end
     end
     puts 'bye'
   end
